@@ -1,0 +1,179 @@
+import os.path
+
+
+#Dictinory of valid letters and score
+valid_letters={
+'a':1,
+'b':3,
+'c':3,
+'d':2,
+'e':1,
+'f':4,
+'g':2,
+'h':4,
+'i':1,
+'j':8,
+'k':5,
+'l':1,
+'m':3,
+'n':1,
+'o':1,
+'p':3,
+'q':10,
+'r':1,
+'s':1,
+'t':1,
+'u':1,
+'v':4,
+'x':8,
+'y':4,
+'z':10
+}
+
+
+
+def calculate_score(word):
+    score=0
+    for letter in word:
+        if letter in valid_letters.keys():
+            score=score+valid_letters[letter]
+        else:
+            return -1
+    return score
+
+def read_file(file_name):
+    if os.path.exists(file_name):
+        f = open(file_name, 'r')
+        word_list = f.readlines()
+        f.close()
+        return word_list
+    return -1
+
+def file_parser(file_name):
+    valid_word_list=[]
+    word_list=read_file(file_name)
+    if word_list==-1:
+        return -1
+    for word in word_list:
+        word=word.strip()
+        score = calculate_score(word)
+        if score !=-1:
+            word_score_tuple=(word,score)
+            valid_word_list.append(word_score_tuple)
+    return valid_word_list
+
+class Scrabble_Box:
+  def __init__(self, value, word_multiplier_val,letter_multiplier_val):
+    self.value = value
+    self.word_multiplier_val = word_multiplier_val
+    self.letter_multiplier_val = letter_multiplier_val
+    
+    
+    
+class Scrabble_Board:
+  def __init__(self, row_size, col_size,word_score,letter_score):
+    Single_Box=Scrabble_Box(-1,1,1)
+    self.Board = [[Single_Box for i in range(row_size)] for j in range(col_size)]  
+    for score in word_score:
+        self.Board[score[0]][score[1]].word_multiplier_val=score[2]
+    for score in letter_score:
+        self.Board[score[0]][score[1]].letter_multiplier_val=score[2]
+
+
+def main():
+    file_name="words.txt"
+    word_list=file_parser(file_name)
+    if word_list==-1:
+        print(file_name,"Does not exist")
+        return 0
+    print("No of Valid Words for scrabble are:",len(word_list))
+    word_score=[
+            (0,0,3),
+            (0,7,3),
+            (0,14,3),            
+            (1,1,2),
+            (1,13,2),
+            (2,2,2),
+            (2,12,2),
+            (3,3,2),
+            (3,11,2),
+            (4,3,2),
+            (4,10,2),
+            (7,7,2),            
+            (10,4,2),
+            (10,10,2),
+            (11,11,2),
+            (11,3,2),
+            (12,12,2),
+            (12,2,2),
+            (13,13,2),
+            (13,1,2),
+            (7,0,3),
+            (7,14,3),
+            (14,0,3),
+            (14,7,3),            
+            (14,14,3)  
+            ]
+    letter_score=[
+            (0,3,2),
+            (0,11,2),
+            (1,5,3),            
+            (1,9,3),
+            
+            (2,6,2),
+            (2,8,2),
+           
+            (3,0,2),
+            (3,7,2),
+            (3,14,2), 
+            
+            (5,1,3),
+            (5,5,3),
+            (5,9,3),
+            (5,13,3),
+            
+            (6,2,2),
+            (6,6,2),
+            (6,8,2),
+            (6,12,2),
+
+            (7,3,2),
+            (7,11,2),
+            
+            (8,2,2),
+            (8,6,2),
+            (8,8,2),
+            (8,12,2),
+
+            (9,1,3),
+            (9,5,3),
+            (9,9,3),
+            (9,13,3),
+
+            (11,0,2),
+            (11,7,2),
+            (11,14,2),
+            
+            (12,6,2),
+            (12,8,2),
+            
+            (13,5,3),
+            (13,9,3),            
+            
+            
+            (14,3,2),
+            (14,11,2),            
+            
+            
+            ]
+    Board=Scrabble_Board(15,15,word_score,letter_score)
+  
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    main()
